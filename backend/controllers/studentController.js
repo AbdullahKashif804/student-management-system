@@ -9,7 +9,11 @@ const addStudent=async(req,res)=>{
                 message:"all fields are required"
             })
         }
-        const student=new studentModel(req.body)
+        const student=new studentModel({
+            ...req.body,
+            image:req.file ? req.file.path : null
+
+    })
         const result=await student.save()
         res.status(201).send({
             success:true,
@@ -24,27 +28,47 @@ const addStudent=async(req,res)=>{
     }
 }
 
-const allStudent=async(req,res)=>{
-    try{
-        const {department}=req.query
-        let result;
-        if(department){
-            result=await studentModel.find({department})
-        }else{
-            result=await studentModel.find()
+const allStudent = async (req, res) => {
+    try {
+        const { department, sort } = req.query;
+
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 5;
+        let skip = (page - 1) * limit;
+        let query = studentModel.find();
+
+        if (department) {
+            query = query.find({ department });
         }
+        if (sort) {
+            query = query.sort({ [sort]: 1 });
+        }
+        query = query.skip(skip).limit(limit);
+        const result = await query;
+        const totalStudents = await studentModel.countDocuments(
+            department?{department}:{}
+        );
+
+        const totalPages = Math.ceil(totalStudents / limit);
+          
         res.status(200).send({
-            success:true,
-            message:"Students fetched successfully",
-            data:result
-        })
-    }catch(error){
+            success: true,
+            message: "Students fetched successfully",
+            data: result,
+            pagination: {
+                totalPages,
+                totalStudents,
+                currentpage: page,
+                pagesize: limit
+            },
+        });
+    } catch (error) {
         res.status(400).send({
-            success:false,
-            message:error.message
-        })
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 const oneStudent=async(req,res)=>{
     try{
@@ -100,8 +124,18 @@ const deleteStudent=async(req,res)=>{
 
 const searchStudent=async(req,res)=>{
     try{
-        const search=req.query.name;
-        const result=await studentModel.find({name:{$regex:search,$options:"i"}})
+        const {name,department,minGpa}=req.query
+        let query={}
+        if(name){
+            query.name={$regex:name,$options:"i"}
+        }
+        if(department){
+            query.department=department
+        }
+        if(minGpa){
+            query.gpa={$gte:Number(minGpa)}
+        }
+        const result=await studentModel.find(query)
         res.status(200).send({
             success:true,
             message:"Student searched successfully",
