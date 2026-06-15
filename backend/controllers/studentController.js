@@ -9,11 +9,11 @@ const addStudent=async(req,res)=>{
                 message:"all fields are required"
             })
         }
-        const student=new studentModel({
-            ...req.body,
-            image:req.file ? req.file.path : null
-
-    })
+        const student = new studentModel({
+        ...req.body,
+        subjects: req.body.subjects.split(","),
+        image: req.file ? `/uploads/${req.file.filename}` : null
+});
         const result=await student.save()
         res.status(201).send({
             success:true,
