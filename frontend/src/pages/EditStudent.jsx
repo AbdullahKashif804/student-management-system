@@ -55,6 +55,7 @@ function EditStudent() {
         })
         console.log('Student updated successfully:', response.data);
         toast.success("Student updated successfully");
+        navigate("/students");
     }catch(error){
         console.error('Error updating student:', error);
         toast.error("Error updating student");

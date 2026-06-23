@@ -39,6 +39,7 @@ const AddStudent = () => {
             });
                 console.log('Student added successfully:', response.data);
                 toast.success("Student added successfully");
+                navigate("/students");
                 setFormData({
                     name: '',
                     age: '',
