@@ -88,24 +88,40 @@ const oneStudent=async(req,res)=>{
 
 const updateStudent=async(req,res)=>{
     try{
-        const result=await studentModel.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {new:true}
-        )
-        res.status(200).send({
-            success:true,
-            message:"student updated successfully",
-            data:result
-        })
-    }catch(error){
-        res.status(400).send({
-            success:false,
-            message:error.message
-        })
-    }
-}
+        const {subjects}=req.body
+          let updateData = {
+            ...req.body
+        };
 
+        if (subjects) {
+            updateData.subjects = JSON.parse(subjects);
+        }
+
+       
+        if (req.file) {
+            updateData.image = `/uploads/${req.file.filename}`;
+        }
+
+        const result = await studentModel.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true }
+        );
+
+        res.status(200).send({
+            success: true,
+            message: "student updated successfully",
+            data: result
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message
+        });
+    }
+};
+    
 const deleteStudent=async(req,res)=>{
     try{
         const result=await studentModel.findByIdAndDelete(req.params.id)

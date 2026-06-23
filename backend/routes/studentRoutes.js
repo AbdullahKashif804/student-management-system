@@ -10,6 +10,6 @@ router.post("/",authMiddleware,uploadMiddleware.single("image"), studentControll
 router.get("/", studentController.allStudent)
 router.get("/search", studentController.searchStudent)
 router.get("/:id", studentController.oneStudent)
-router.put("/:id",authMiddleware,adminMiddleware, studentController.updateStudent)
+router.put("/:id",authMiddleware,uploadMiddleware.single("image"),adminMiddleware, studentController.updateStudent)
 router.delete("/:id",authMiddleware,adminMiddleware, studentController.deleteStudent)
 module.exports=router
