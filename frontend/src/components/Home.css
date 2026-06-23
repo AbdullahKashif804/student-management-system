@@ -29,8 +29,8 @@
     background-color: #f9f9f9;
     cursor: pointer;
 }
-.dashboard-card p {
-    font-size: 1.2em;
+.dashboard-card h1 {
+    /* font-size: 1.2em; */
     margin-top: 10px;
     color: #4CAF50;
 }

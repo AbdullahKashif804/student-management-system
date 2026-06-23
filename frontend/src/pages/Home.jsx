@@ -27,7 +27,7 @@ function Home() {
       <div className="dashboard-container">
         <div className="dashboard-card">
           <h2>Total Students</h2>
-          <p>{totalStudents}</p>
+          <h1>{totalStudents}</h1>
         </div>
         <div className="dashboard-card">
           <h2>Add Student</h2>
