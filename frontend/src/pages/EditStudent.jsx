@@ -3,8 +3,10 @@ import {useState, useEffect} from "react";
 import Api from "../services/api";
 import { toast } from "react-toastify";
 import "../components/form.css"
+import { useNavigate } from "react-router-dom";
 
 function EditStudent() {
+    const navigate = useNavigate();
     const {id} = useParams();
     const [formData, setFormData] = useState({
             name: '',

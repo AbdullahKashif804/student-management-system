@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import '../components/form.css';
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const AddStudent = () => {
-    
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         age: '',
@@ -53,7 +54,7 @@ const AddStudent = () => {
                 });
         } catch (error) {
             console.error('Error adding student:', error);
-            toast.error("Error adding student");
+            // toast.error("Error adding student");
         }
     };
 
