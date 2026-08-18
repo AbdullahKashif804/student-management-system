@@ -109,3 +109,129 @@
     margin-top: 30px;
     width: 100%;
 }
+
+.page-wrapper {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.search-container {
+    width: 100%;
+}
+
+.search-container input {
+    min-width: 180px;
+    box-sizing: border-box;
+}
+
+.search-container button:disabled {
+    background-color: #9ccc9e;
+    cursor: not-allowed;
+}
+
+.students-container {
+    width: 100%;
+}
+
+.students-card {
+    box-sizing: border-box;
+}
+
+.student-image {
+    height: 210px;
+    object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .students-card {
+    width: calc(50% - 20px);
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 15px;
+  }
+
+  .student-title {
+    font-size: 1.7em;
+  }
+
+  .search-container {
+    gap: 10px;
+  }
+
+  .search-container input {
+    width: calc(50% - 10px);
+    min-width: 0;
+  }
+
+  .search-container button {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .students-card {
+    width: calc(50% - 15px);
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pagination button {
+    margin: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-wrapper {
+    padding: 12px;
+  }
+
+  .student-title {
+    font-size: 1.5em;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container input,
+  .search-container button {
+    width: 100%;
+  }
+
+  .students-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .students-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 16px;
+  }
+
+  .student-image {
+    height: 220px;
+  }
+
+  .delete-btn,
+  .edit-btn {
+    width: 100%;
+  }
+
+  .pagination {
+    width: 100%;
+  }
+
+  .pagination button {
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+}

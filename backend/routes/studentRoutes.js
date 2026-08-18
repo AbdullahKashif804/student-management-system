@@ -9,6 +9,7 @@ const uploadMiddleware=require("../middleware/uploadMiddleware")
 router.post("/",authMiddleware,uploadMiddleware.single("image"), studentController.addStudent)
 router.get("/", studentController.allStudent)
 router.get("/search", studentController.searchStudent)
+router.get("/stats", studentController.studentStats);
 router.get("/:id", studentController.oneStudent)
 router.put("/:id",authMiddleware,uploadMiddleware.single("image"),adminMiddleware, studentController.updateStudent)
 router.delete("/:id",authMiddleware,adminMiddleware, studentController.deleteStudent)

@@ -1,45 +1,86 @@
 import "./Navbar.css";
-import { Link,useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-const Navbar=()=>{
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+const Navbar = () => {
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setUser(true);
-        }
-    }, []);
-    const handlelogout=(e)=>{
-        localStorage.removeItem('token');
-        navigate("/login");
-    }
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Boolean(localStorage.getItem("token"))
+  );
 
-    return(
-        <nav className="navbar">
-            <div className="logo">
-               🎓 Student Management System
-            </div>
-            <div className="nav-links">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/students" className="nav-link">Students</Link>
-            <Link to="/add-student" className="nav-link">Add</Link>
-            <Link to="/login" className="nav-link">Login</Link>
-            </div>
+  useEffect(() => {
+    const updateAuthState = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(Boolean(token));
+    };
 
-            <div className="nav-right">
-                {user && (
-                <button className="logout-btn" onClick={handlelogout}>
-                    Logout
-                </button>
-            )}
-            </div>
-            
-        </nav>
-    )
-    
-}
+    window.addEventListener("authChange", updateAuthState);
+    window.addEventListener("storage", updateAuthState);
+
+    return () => {
+      window.removeEventListener("authChange", updateAuthState);
+      window.removeEventListener("storage", updateAuthState);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    window.dispatchEvent(new Event("authChange"));
+
+    navigate("/login");
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="logo">
+        🎓 Student Management System
+      </div>
+
+      <div className="nav-links">
+        <Link to="/" className="nav-link">
+          Home
+        </Link>
+
+        {isLoggedIn && (
+          <>
+            <Link to="/students" className="nav-link">
+              Students
+            </Link>
+
+            <Link to="/add-student" className="nav-link">
+              Add
+            </Link>
+          </>
+        )}
+
+        {!isLoggedIn && (
+          <>
+            <Link to="/login" className="nav-link">
+              Login
+            </Link>
+
+            <Link to="/signup" className="nav-link">
+              Create Account
+            </Link>
+          </>
+        )}
+      </div>
+
+      <div className="nav-right">
+        {isLoggedIn && (
+          <button
+            className="logout-btn"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;
